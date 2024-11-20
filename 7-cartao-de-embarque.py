@@ -1,5 +1,5 @@
 # Utilizando o processo de abstração, implemente uma classe em Python que represente um cartão de embarque de voo. Identifique atributos mutáveis e imutáveis, implemente um construtor da classe e métodos para manipulação dos atributos mutáveis. Faça todas as validações possíveis. Crie objetos para testar os métodos implementados.
-from datetime import date
+from datetime import datetime
 
 class CartaoEmbarque:
     # Método construtor/inicializador:
@@ -12,15 +12,19 @@ class CartaoEmbarque:
         self.status = status
         self.assento = assento
     
-    def check_in (self):
+    def realizar_check_in (self, status, assento):
         # altera o status e associa um assento (aleatório) disponível ao passageiro.
+        # Validações para garantir que o check-in só possa ser feito uma vez.
         pass
-    def escolher_assento (self):
+    def escolher_assento (self, assento):
         # alterar o assento (apenas se o check-in já tiver sido realizado).
+        # Validações para garantir que assentos indisponíveis não sejam atribuídos.
         pass
-    def validacao (self):
-        # Validações para garantir que assentos indisponíveis não sejam atribuídos e que o check-in só possa ser feito uma vez.
-        # Requisitos de validação: o código da reserva deve ter 6 caracteres alfanuméricos; a hora do embarque não pode ser retroativa em relação ao momento de execução do código.
+    def validar_reserva (self, reserva):
+        # o código da reserva deve ter 6 caracteres alfanuméricos
+        pass
+    def validar_hora (self, hora):
+        # a hora do embarque não pode ser retroativa em relação ao momento de execução do código.
         pass
     def __str__(self) -> str:
         return (f'Passageiro: {self.nome}\n'
