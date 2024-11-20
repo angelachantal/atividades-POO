@@ -36,9 +36,7 @@ class CartaoEmbarque:
                 self.status = 'Check-in realizado com sucesso!'
 #remover o assento escolhido da lista
 
-#infice_assento = assentos_disponíveis.index
-
-
+assentos_disponíveis.pop(self.assento)
                 return f'{self.status}\n{self}Assento:{self.assento}'
             
             #Se o passageiro quiser escolher o assento, imprimir os assentos disponíveis, alterar o assento para a opção desejada, remover o assento da lista de assentos disponíveis, alterar o status para "Check-in realizado", e imprimir as informações do cartão de embarque
@@ -46,6 +44,7 @@ class CartaoEmbarque:
                 print (f'Assentos Disóníveis: {assentos_disponíveis}')
                 self.assento = input('Informe o assento desejado: ').strip().upper()
                 #remover o assento escolhido da lista
+assentos_disponíveis.pop(self.assento)
                 self.status = 'Check-in realizado com sucesso!'
                 return f'{self.status}\n{self}Assento:{self.assento}'
             
