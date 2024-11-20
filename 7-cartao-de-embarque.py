@@ -32,8 +32,9 @@ class CartaoEmbarque:
             
             #Se o passageiro não quiser escolher o assento, definir uma opção aleatoriamente, alterar o status para "Check-in realizado", e imprimir as informações do cartão de embarque
             if escolher_assento == 'N':
-                # self.assento = random...
+                self.assento = random.choice(assentos_disponíveis)
                 self.status = 'Check-in realizado com sucesso!'
+#remover o assento escolhido da lista
                 return f'{self.status}\n{self}Assento:{self.assento}'
             
             #Se o passageiro quiser escolher o assento, imprimir os assentos disponíveis, alterar o assento para a opção desejada, remover o assento da lista de assentos disponíveis, alterar o status para "Check-in realizado", e imprimir as informações do cartão de embarque
