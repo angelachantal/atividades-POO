@@ -17,7 +17,7 @@ class CartaoEmbarque:
     def realizar_check_in (self, status=False, assento=None):
         self.status = status
         self.assento = assento
-        assentos_disponíveis = ('5B','5D','19A', '19B', '19F', '32C')
+        assentos_disponíveis = ['5B','5D','19A', '19B', '19F', '32C']
         
         check_in = input(f'{self.nome}, deseja fazer o check-in? S/N ').strip().upper()
         
@@ -35,6 +35,10 @@ class CartaoEmbarque:
                 self.assento = random.choice(assentos_disponíveis)
                 self.status = 'Check-in realizado com sucesso!'
 #remover o assento escolhido da lista
+
+#infice_assento = assentos_disponíveis.index
+
+
                 return f'{self.status}\n{self}Assento:{self.assento}'
             
             #Se o passageiro quiser escolher o assento, imprimir os assentos disponíveis, alterar o assento para a opção desejada, remover o assento da lista de assentos disponíveis, alterar o status para "Check-in realizado", e imprimir as informações do cartão de embarque
