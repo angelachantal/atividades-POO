@@ -1,20 +1,12 @@
 # Exercício 10 – Implementação da Classe Ar-Condicionado
 
-class ArCondicionado():
+class ArCondicionado:
     # Método construtor/inicializador:
-    def __init__(self, temp_min, temp_max, vel_min, vel_max, temperatura, velocidade, modo, ligado=False):
-        self.tem_min = temp_min
-        self.temp_max = temp_max
-        self.vel_min = vel_min
-        self.vel_max = vel_max
+    def __init__(self, temperatura, velocidade, modo='automatico', ligado=False):
         self.temperatura = temperatura
         self.velocidade = velocidade
         self.modo = modo
         self.ligado = ligado
-            # temperatura: <temperatura_escolhida dentro dos limites>
-            # velocidade: <velocidade escolhida dentro dos limites>
-            # modo: <’automático’/’frio’/’ventilar’>
-            # ligado: True/False) -> None:
     
     def __str__(self) -> str:
         pass
