@@ -1,17 +1,19 @@
 # Exercício 10 – Implementação da Classe Ar-Condicionado
 
 class ArCondicionado:
-    # Método construtor/inicializador:
-    def __init__(self, temperatura, velocidade, modo='automatico', ligado=False):
-        self.temperatura = temperatura
-        self.velocidade = velocidade
+    # Método inicializador:
+    def __init__(self, modo='automático', ligado=True):
+        self.temperatura= 20
+        self.velocidade = 3
         self.modo = modo
         self.ligado = ligado
     
     def __str__(self) -> str:
-        pass
-    
-    # Métodos a serem implementados (CASOS DE USO):
+        if self.ligado == True:
+            return f'APARELHO LIGADO\nModo: {self.modo}\nTemperatura: {self.temperatura}\nVelocidade: {self.velocidade}'
+        else:
+            return f'APARELHO DESLIGADO'
+       
     def ligar():
         pass
         # Fluxo normal: 
@@ -38,42 +40,46 @@ class ArCondicionado:
             # Sistema imprime estado atual.
         # Extensões: 
             # 1a. Se a temperatura for maior que 28°C, imprimir “Atingiu temperatura máxima” e imprimir o estado atual do aparelho.
+            # temp_min
+            # temp_max
     def diminuir_temperatura():
         pass
-    # Fluxo normal: 
-# Sistema decrementa a temperatura em 1°C.
-# Sistema imprime estado atual.
-# Extensões: 
-# 1a. Se a temperatura for menor que 18°C, imprimir “Atingiu temperatura mínima” e imprimir o estado atual do aparelho.
+        # Fluxo normal: 
+            # Sistema decrementa a temperatura em 1°C.
+            # Sistema imprime estado atual.
+        # Extensões: 
+            # 1a. Se a temperatura for menor que 18°C, imprimir “Atingiu temperatura mínima” e imprimir o estado atual do aparelho.
     def aumentar_velocidade():
         pass
-    # Fluxo normal: 
-# Sistema incrementa a velocidade em 1.
-# Sistema imprime estado atual.
-# Extensões: 
-# 1a. Se o modo for automático, imprime: “Não é possível alterar a velocidade” e imprimir o estado atual do aparelho.
-# 1b. Se a velocidade for maior que 5, imprimir “Atingiu a velocidade máxima” e imprimir o estado atual do aparelho.
+        # Fluxo normal: 
+            # Sistema incrementa a velocidade em 1.
+            # Sistema imprime estado atual.
+        # Extensões: 
+            # 1a. Se o modo for automático, imprime: “Não é possível alterar a velocidade” e imprimir o estado atual do aparelho.
+            # 1b. Se a velocidade for maior que 5, imprimir “Atingiu a velocidade máxima” e imprimir o estado atual do aparelho.
+            # vel_min, vel_max
     def diminuir_velocidade():
         pass
-    # Fluxo normal: 
-# Sistema decrementa a velocidade em 1.
-# Sistema imprime estado atual.
-# Extensões: 
-# 1a 1a. Se o modo for automático, imprime: “Não é possível alterar a velocidade” e imprimir o estado atual do aparelho.
-# 1b Se a velocidade for menor que 1, imprimir “Atingiu a velocidade mínima” e imprimir o estado atual do aparelho.
+        # Fluxo normal: 
+            # Sistema decrementa a velocidade em 1.
+            # Sistema imprime estado atual.
+        # Extensões: 
+            # 1a 1a. Se o modo for automático, imprime: “Não é possível alterar a velocidade” e imprimir o estado atual do aparelho.
+            # 1b Se a velocidade for menor que 1, imprimir “Atingiu a velocidade mínima” e imprimir o estado atual do aparelho.
     def mudar_modo(modo):
         pass
-    # Fluxo normal: 
-# Sistema pergunta qual modo o usuário deseja e apresenta as opções.
-# Sistema altera o modo do aparelho
-# Sistema imprime estado atual.
-# Extensões: 
-# 2a. Se o cliente escolher a opção 1, imprime “Frio”.
-# 3b. Se o cliente escolher a opção 2, imprime “Ventilar”.
-# 3c. Se o cliente escolher a opção 3, imprime “Automático”
-# 3d. Se o cliente escolher a opção 4, imprime “Opção inválida”.
+        # Fluxo normal: 
+            # Sistema pergunta qual modo o usuário deseja e apresenta as opções.
+            # Sistema altera o modo do aparelho
+            # Sistema imprime estado atual.
+        # Extensões: 
+            # 2a. Se o cliente escolher a opção 1, imprime “Frio”.
+            # 3b. Se o cliente escolher a opção 2, imprime “Ventilar”.
+            # 3c. Se o cliente escolher a opção 3, imprime “Automático”
+            # 3d. Se o cliente escolher a opção 4, imprime “Opção inválida”.
 def main():
-    pass
+    aparelho = ArCondicionado()
+    print (aparelho)
 # Imprimir estado
     # Fluxo normal: 
         # Sistema lê o estado atual do aparelho
@@ -89,5 +95,5 @@ def main():
         # 3g. Se o cliente escolher a opção 7, diminuir a velocidade.
         # 3h. Se o cliente escolher a opção 8, mudar o modo.
 
-if __name__='__main__':
+if __name__=='__main__':
     main()
