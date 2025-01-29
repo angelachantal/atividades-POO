@@ -4,3 +4,14 @@
 #c) O método renderJuros(...) da subclasse ContaPoupança aplica o percentual definido no parâmetro taxa_juros em cima do atributo saldo da classe ContaCorrente, atualizando-o.
 #d) Crie uma classe ContaImposto que herda de ContaCorrente e possui um atributo percentual_Imposto. Esta classe também possui um método calcula_Imposto() que subtrai do saldo, o valor do próprio saldomultiplicado pelo percentual do imposto.
      
+class ContaCorrente:
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        pass
+
+class ContaPoupanca(ContaCorrente):
+    def __init__(self):
+        super().__init__()
+        pass
