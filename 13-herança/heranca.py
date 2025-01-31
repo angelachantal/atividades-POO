@@ -17,11 +17,13 @@ class ContaCorrente:
     def creditar(self, cred):
         #O método creditar(...) adiciona um valor recebido como parâmetro e adiciona ao atributo saldo. 
         self.__saldo+=cred
+        return self.__saldo
      
     def debitar(self, deb):
         #O método debitar(...) subtrai do atributo saldo o valor passado como parâmetro, somente se este valor for menor ou igual ao saldo da conta. 
         if deb <= self.__saldo:
             self.__saldo-=deb
+            return self.__saldo
         else:
             print ('Saldo insuficiente')           
 
@@ -34,7 +36,7 @@ class ContaCorrente:
 class ContaPoupanca(ContaCorrente):
     def __init__(self, numero, saldo, taxa_juros):
         super().__init__(numero, saldo)
-        self.
+        pass
 
     def __str__(self):
         return super().__str__()
@@ -55,15 +57,18 @@ class ContaImposto (ContaCorrente):
         #subtrai do saldo, o valor do próprio saldomultiplicado pelo percentual do imposto.
         pass
     
-def main():
-    conta1 = ContaCorrente(1234, 20000)
-    print (conta1)
-    conta2 = ContaCorrente(123, 10000)
-    print (conta2)
+# def main():
+    # conta1 = ContaCorrente(1234, 20000)
+    # conta2 = ContaCorrente(123, 10000)
+    # print (conta1)
+    # print (conta2)
     
-    conta1.transferir(conta2, 200)
-    print (conta1)
-    print (conta2)
+    # conta1.transferir(conta2, 200)
+    # print (conta1)
+    # print (conta2)
+    
+    # conta1.creditar(100)
+    # print (conta1)
         
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+    # main()
