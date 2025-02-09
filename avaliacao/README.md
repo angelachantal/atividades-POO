@@ -1,21 +1,21 @@
 # Trabalho Final da Disciplina Programação Orientada a Objetos - Turma 266
 
-# Equipe: 
+## Equipe
 
 - Ângela Chantal
 - Murilo Monte
 - Renan Miqueias
 - Thiário Lima
 
-# Reuso com Python
+## Reuso com Python
 
-**Associação de classes, Herança, Polimorfismo**
+### Associação de classes, Herança, Polimorfismo
 
 Implementar um sistema de gerenciamento de chips de telefonia celular para uma operadora. 
 
 O sistema deve permitir cadastrar clientes, associá-los a chips pré ou pós-pago e gerenciar as recargas, cobranças de faturas e o uso de serviços como chamadas, SMS e dados móveis.
 
-## `class Operadoras` 
+### class Operadoras
 
 Pode conter múltiplos clientes (associação 1:N).
 
@@ -27,7 +27,7 @@ Pode conter múltiplos clientes (associação 1:N).
 
 `listar_clientes(self)` - Listar todos os clientes cadastrados
 
-## `class Clientes`: 
+### class Clientes
 
 Representa um cliente da operadora, podendo possuir um ou mais chips de diferentes tipos.
 
@@ -39,7 +39,7 @@ Representa um cliente da operadora, podendo possuir um ou mais chips de diferent
 
 `listar_chips()` - Exibe todos os chips cadastrados do cliente/ Listar os chips ativos do cliente.
 
-## `class Chips`: 
+### class Chips
 
 Representa um chip de telefonia celular, armazenando o número e o tipo (pré ou pós-pago).
 
@@ -49,19 +49,21 @@ Exibe detalhes do chip, incluindo número e tipo de plano.
 
     Maria (Pós-pago, Número: 21912345678) → Fatura: R$ 155,50
 
-## `class Plano`
+#### Métodos abstratos
+
+`realizar_chamada(duracao)` - Realiza uma chamada e debita do saldo ou adiciona na fatura (R$ 0,50/min).
+
+`enviar_sms(quantidade)` - Envia mensagens SMS e debita do saldo ou adiciona na fatura (R$ 0,30/SMS).
+
+`consumir_dados_internet(gb)` - Consome um pacote de dados e debita do saldo ou adiciona na fatura (R$ 5,00/GB).
+
+### class Plano
 
 Superclasse que representa um plano de telefonia, com um custo associado.
 
 <!-- Estou na dúvida se os métodos abaixo entram aqui, ou na classe que trará o método polimórfico. -->
 
 `calcular_custo(meses)` - Retorna o custo do plano com base no período de uso.
-
-`realizar_chamada(duracao)` - Realiza uma chamada e debita do saldo ou adiciona na fatura (R$ 0,50/min).
-
-`enviar_sms(quantidade)` - Envia mensagens SMS e debita do saldo ou adiciona na fatura (R$ 0,30/SMS).
-    
-`consumir_dados_internet(gb)` - Consome um pacote de dados e debita do saldo ou adiciona na fatura (R$ 5,00/GB).
 
 ### `class PlanoPrePago`
 
@@ -118,7 +120,7 @@ Utilizar exceções para tratar casos como saldo insuficiente para o pré-pago.
 
 Utilizar exceções para tratar casos como fatura em atraso para o pós-pago.
 
-## Implementação extra:
+## Implementação extra
 
 Método polimórfico para imprimir os detalhes do consumo do chip, incluindo chamadas, SMS e dados móveis utilizados.
 
