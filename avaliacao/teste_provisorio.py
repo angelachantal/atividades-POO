@@ -5,10 +5,9 @@ alice = Clientes('Alice')
 vivo.adicionar_cliente(alice)
 vivo.listar_clientes()
 
-planoPre = PlanosPre()
-planoPos = PlanosPos()
-chip1 = Chips('PRE', '55 86 98826-0121', alice, planoPre)
-chip2 = Chips('POS', '55 86 98855-5555', alice, planoPos)
+# É possível passar diretamente uma instância sem atribuir ela à uma variável
+chip1 = Chips('PRE', '55 86 98826-0121', alice, PlanosPre())
+chip2 = Chips('POS', '55 86 98855-5555', alice, PlanosPos())
 
 alice.adicionar_chip(chip1)
 alice.adicionar_chip(chip2)

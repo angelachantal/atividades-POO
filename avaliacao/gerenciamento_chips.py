@@ -105,6 +105,7 @@ class Chips:
         custo = 5 * gb
         self.__plano.consumir_dados_internet(self, gb, custo)
 
+    # mover saldo para Planos?
     def adicionar_saldo(self, saldo):
         self.__saldo = saldo
         print(f"Recarga de R$ {saldo:.2f} realizada com sucesso!")
@@ -118,11 +119,46 @@ class Chips:
 
 
 class Planos:
-    def __init__():
-        ...
+    def __init__(self):
+        self.__consumo_sms = 0
+        self.__consumo_chamada = 0
+        self.__consumo_internet = 0
+        self.__consumo_total = 0
 
     def calcular_custo(self):
         pass
+    
+    @property
+    def consumo_sms(self):
+        return self.__consumo_sms
+
+    @consumo_sms.setter
+    def consumo_sms(self, valor):
+        self.__consumo_sms = valor
+
+    @property
+    def consumo_chamada(self):
+        return self.__consumo_chamada
+
+    @consumo_chamada.setter
+    def consumo_chamada(self, valor):
+        self.__consumo_chamada = valor
+
+    @property
+    def consumo_internet(self):
+        return self.__consumo_internet
+
+    @consumo_internet.setter
+    def consumo_internet(self, valor):
+        self.__consumo_internet = valor
+
+    @property
+    def consumo_total(self):
+        return self.__consumo_total
+
+    @consumo_total.setter
+    def consumo_total(self, valor):
+        self.__consumo_total = valor
 
     def __str__(self):
         pass
@@ -131,23 +167,23 @@ class Planos:
 class PlanosPre(Planos):
     def __init__(self):
         super().__init__()
-        self.__consumo_sms = 0
-        self.__consumo_chamada = 0
-        self.__consumo_internet = 0
-        self.__consumo_total = 0
 
     def calcular_custo(self):
+        # Ao herdar de Planos é criado uma cópia dos atributos. Com isso, não é preciso usar super() para acessar os mesmos.
+        self.consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
         return (
-            f"Chamadas: R$ {self.__consumo_total}"
-            f"SMS: R$ {self.__consumo_total}"
-            f"Internet: R$ {self.__consumo_total}"
-            f"Consumo total: R$ {self.__consumo_total}"
+            f"## Custo total\n"
+            f"Chamadas: R$ {self.consumo_chamada:.2f}\n"
+            f"SMS: R$ {self.consumo_sms:.2f}\n"
+            f"Internet: R$ {self.consumo_internet:.2f}\n"
+            f"------------------------\n"
+            f"Consumo total: R$ {self.consumo_total:.2f}"
         )
 
     def realizar_chamada(self, chip, duracao, custo):
         # Pré-pago: Deduz o custo da chamada do saldo (R$ 0,50/min).
         chip.saldo -= custo
-        self.__consumo_chamada = custo
+        self.consumo_chamada = custo
         print(
             f"Cliente {chip.cliente.nome} fez uma ligação de {duracao} minutos (custo: R$ {custo:.2f})..."
         )
@@ -155,7 +191,7 @@ class PlanosPre(Planos):
 
     def enviar_sms(self, chip, quantidade, custo):
         chip.saldo -= custo
-        self.__consumo_sms = custo
+        self.consumo_sms = custo
         print(
             f"Cliente {chip.cliente.nome} enviou {quantidade} SMS (custo: R$ {custo:.2f})..."
         )
@@ -163,7 +199,7 @@ class PlanosPre(Planos):
 
     def consumir_dados_internet(self, chip, gb, custo):
         chip.saldo -= custo
-        self.__consumo_internet = custo
+        self.consumo_internet = custo
         print(
             f"Cliente {chip.cliente.nome} consumiu  {gb}GB de internet (custo: R$ {custo:.2f})..."
         )
