@@ -48,13 +48,13 @@ class Clientes:
         else:
             self.__chips_lista.append(chip)
             print(
-                f"Associando o chip {chip.plano.tipo}-pago (Número: {chip.numero}) ao cliente {self.__nome}"
+                f"Associando o chip {chip.plano.tipo}-pago (Número: {chip.numero}) ao cliente {self.__nome}..."
             )
 
     def listar_chips(self):
         chips = ""
         for chip in self.__chips_lista:
-            chips += f"- Número: {chip.numero} - Tipo: {chip.tipo}\n"
+            chips += f"- Número: {chip.numero} - Tipo: {chip.tipo}-pago\n"
         return chips
 
     def __str__(self):
