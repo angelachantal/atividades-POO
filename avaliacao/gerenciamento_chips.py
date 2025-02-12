@@ -10,20 +10,23 @@ class Operadoras:
         pass
 
     def adicionar_cliente(self, cliente):
-        self.__clientes_lista.append(cliente)
-        print(f"Cadastrando cliente {cliente.nome}")
-        # Cadastrando cliente João...
+        if cliente in self.__clientes_lista:
+            print(f"O cliente {cliente.nome} já está cadastrado!")
+        else:
+            self.__clientes_lista.append(cliente)
+            print(f"Cadastrando cliente {cliente.nome}...")
+                    # Cadastrando cliente João...
 
     def listar_clientes(self):
-        print("Clientes")
+        print("Clientes:")
         for cliente in self.__clientes_lista:
             print(f"- {cliente.nome}")
-        # Clientes:
-        # - João
-        # - Maria
+            # Clientes:
+            # - João
+            # - Maria
 
     def __str__(self):
-        pass
+        return f'Operadora ativa.'
 
 
 class Clientes:
@@ -40,10 +43,13 @@ class Clientes:
         return self.__chips
 
     def adicionar_chip(self, chip):
-        self.__chips_lista.append(chip)
-        print(
-            f"Associando o chip {chip.tipo}-pago (Número: {chip.numero}) ao cliente {self.__nome}"
-        )
+        if chip in self.__chips_lista:
+            print(f"O número {chip.numero} não está disponível.")
+        else:
+            self.__chips_lista.append(chip)
+            print(
+                f"Associando o chip {chip.plano.tipo}-pago (Número: {chip.numero}) ao cliente {self.__nome}"
+            )
 
     def listar_chips(self):
         chips = ""
@@ -58,17 +64,11 @@ class Clientes:
 
 
 class Chips:
-    def __init__(self, tipo, numero, cliente, plano):
-        self.__tipo = tipo
+    def __init__(self, numero, cliente, plano):
         self.__numero = numero
         self.__plano = plano  # instancia de plano
         self.__cliente = cliente
-        self.__saldo = 0
 
-    @property
-    def tipo(self):
-        return self.__tipo
-    
     @property
     def plano(self):
         return self.__plano
@@ -81,52 +81,32 @@ class Chips:
     def cliente(self):
         return self.__cliente
 
-    @property
-    def saldo(self):
-        return self.__saldo
-
-    @saldo.setter
-    def saldo(self, saldo):
-        self.__saldo = saldo
-
     ## Métodos polimórficos
     def realizar_chamada(self, duracao):
-        # Deduz o custo da chamada do saldo (R$ 0,50/min).
-        custo = 0.5 * duracao
-        self.__plano.realizar_chamada(self, duracao, custo)
+        self.__plano.realizar_chamada(self, duracao)
 
     def enviar_sms(self, quantidade):
-        # Deduz o custo dos SMS do saldo (R$ 0,30/SMS).
-        custo = 0.3 * quantidade
-        self.__plano.enviar_sms(self, quantidade, custo)
+        self.__plano.enviar_sms(self, quantidade)
 
     def consumir_dados_internet(self, gb):
-        # Deduz o custo do saldo (R$ 5,00/GB).
-        custo = 5 * gb
-        self.__plano.consumir_dados_internet(self, gb, custo)
-
-    # mover saldo para Planos?
-    def adicionar_saldo(self, saldo):
-        self.__saldo = saldo
-        print(f"Recarga de R$ {saldo:.2f} realizada com sucesso!")
-
-    def mostrar_saldo(self):
-        return f"{self.__saldo:.2f}"
+        self.__plano.consumir_dados_internet(self, gb)
 
     def __str__(self):
-        # João (Pré-pago, Número: 11987654321) → Saldo: R$ 33,50
-        pass
+        #Condicional para mostrar saldo ou valor da fatura
+        return f'{self.__cliente.nome} ({self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}'
 
 
 class Planos:
     def __init__(self):
+        self.__tipo = ''
         self.__consumo_sms = 0
         self.__consumo_chamada = 0
         self.__consumo_internet = 0
         self.__consumo_total = 0
 
-    def calcular_custo(self):
-        pass
+    @property
+    def tipo(self):
+        return self.__tipo
     
     @property
     def consumo_sms(self):
@@ -160,6 +140,21 @@ class Planos:
     def consumo_total(self, valor):
         self.__consumo_total = valor
 
+    def calcular_custo(self):
+        pass
+    
+    def consultar_status(self):
+        pass
+    
+    def realizar_chamada(self):
+        pass
+
+    def enviar_sms(self):
+        pass
+
+    def consumir_dados_internet(self):
+        pass
+
     def __str__(self):
         pass
 
@@ -167,9 +162,22 @@ class Planos:
 class PlanosPre(Planos):
     def __init__(self):
         super().__init__()
+        self.__tipo = 'pré'
+        self.__saldo = 0
+
+    @property
+    def tipo(self):
+        return self.__tipo
+    
+    @property
+    def saldo(self):
+        return self.__saldo
+
+    @saldo.setter
+    def saldo(self, saldo):
+        self.__saldo = saldo
 
     def calcular_custo(self):
-        # Ao herdar de Planos é criado uma cópia dos atributos. Com isso, não é preciso usar super() para acessar os mesmos.
         self.consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
         return (
             f"## Custo total\n"
@@ -180,46 +188,128 @@ class PlanosPre(Planos):
             f"Consumo total: R$ {self.consumo_total:.2f}"
         )
 
-    def realizar_chamada(self, chip, duracao, custo):
+    def consultar_status(self):
+        return f'Saldo: {self.mostrar_saldo()}'
+        
+    def adicionar_saldo(self, saldo):
+        self.__saldo = saldo
+        print(f"Recarga de R$ {saldo:.2f} realizada com sucesso!")
+
+    def mostrar_saldo(self):
+        return f"{self.__saldo:.2f}"
+
+    def __verificar_saldo():
+        ...
+
+    def realizar_chamada(self, chip, duracao):
+        self.__verificar_saldo()
         # Pré-pago: Deduz o custo da chamada do saldo (R$ 0,50/min).
-        chip.saldo -= custo
+        custo = 0.5 * duracao
+        self.saldo -= custo
         self.consumo_chamada = custo
         print(
             f"Cliente {chip.cliente.nome} fez uma ligação de {duracao} minutos (custo: R$ {custo:.2f})..."
         )
-        print(f"Saldo atual: {chip.mostrar_saldo()}")
+        print(f"Saldo atual: {self.mostrar_saldo()}")
 
-    def enviar_sms(self, chip, quantidade, custo):
-        chip.saldo -= custo
+    def enviar_sms(self, chip, quantidade):
+        self.__verificar_saldo()
+        # Deduz o custo dos SMS do saldo (R$ 0,30/SMS).
+        custo = 0.3 * quantidade
+        self.saldo -= custo
         self.consumo_sms = custo
         print(
             f"Cliente {chip.cliente.nome} enviou {quantidade} SMS (custo: R$ {custo:.2f})..."
         )
-        print(f"Saldo atual: {chip.mostrar_saldo()}")
+        print(f"Saldo atual: {self.mostrar_saldo()}")
 
-    def consumir_dados_internet(self, chip, gb, custo):
-        chip.saldo -= custo
+    def consumir_dados_internet(self, chip, gb):
+        self.__verificar_saldo()
+        # Deduz o custo do saldo (R$ 5,00/GB).
+        custo = 5 * gb
+        self.saldo -= custo
         self.consumo_internet = custo
         print(
             f"Cliente {chip.cliente.nome} consumiu  {gb}GB de internet (custo: R$ {custo:.2f})..."
         )
-        print(f"Saldo atual: {chip.mostrar_saldo()}")
+        print(f"Saldo atual: {self.mostrar_saldo()}")
 
     def __str__(self):
-        return super().__str__() + f"."
+        self.calcular_custo()
 
 
 class PlanosPos(Planos):
     def __init__(self):
         super().__init__()
-        pass
+        self.__tipo = 'pós'
+        self.__fatura = 120
+        self.__vencimento = 0
+    
+    @property
+    def tipo(self):
+        return self.__tipo
+    
+    @property
+    def fatura(self):
+        return self.__fatura
+    
+    @property
+    def fatura(self):
+        return self.__vencimento
+    
+    def __verificar_vencimento():
+        ...
 
-    def calcular_custo(self): ...
-    def realizar_chamada(self, duracao):
-        print("Chamada Pos")
+    def calcular_custo(self):
+        self.consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
+        return (
+            f"## Custo total\n"
+            f"Chamadas: R$ {self.consumo_chamada:.2f}\n"
+            f"SMS: R$ {self.consumo_sms:.2f}\n"
+            f"Internet: R$ {self.consumo_internet:.2f}\n"
+            f"------------------------\n"
+            f"Consumo total: R$ {self.consumo_total:.2f}\n"
+            f'Fatura: R$ {self.__fatura:.2f}\n'
+            f'Vencimento: {self.__vencimento}'
+        )
 
-    def enviar_sms(self, quantidade): ...
-    def consumir_dados_internet(self, gb): ...
+    def consultar_status(self):
+        # if data_atrasada: print('Valor da fatura; data de vencimento; Fatura em atraso.')
+        # else: 
+        return f'Fatura: R$ {self.__fatura:.2f}\nVencimento: {self.__vencimento}'
+        
+    def realizar_chamada(self, chip, duracao):
+        self.__verificar_vencimento()
+
+        custo = 0.30 * duracao
+        self.__fatura += custo
+        self.consumo_chamada = custo
+        print(
+            f"Cliente {chip.cliente.nome} fez uma ligação de {duracao} minutos (custo: R$ {custo:.2f})..."
+        )
+        print(f"Fatura atual: R$ {self.__fatura:.2f}")
+
+    def enviar_sms(self, chip, quantidade):
+        self.__verificar_vencimento()
+
+        custo = 0.20 * quantidade
+        self.__fatura += custo
+        self.consumo_sms = custo
+        print(
+            f"Cliente {chip.cliente.nome} enviou {quantidade} SMS (custo: R$ {custo:.2f})..."
+        )
+        print(f"Fatura atual: R$ {self.__fatura:.2f}")
+
+    def consumir_dados_internet(self, chip, gb):
+        self.__verificar_vencimento()
+
+        custo = 2 * gb
+        self.__fatura += custo
+        self.consumo_internet = custo
+        print(
+            f"Cliente {chip.cliente.nome} consumiu  {gb}GB de internet (custo: R$ {custo:.2f})..."
+        )
+        print(f"Fatura atual: R$ {self.__fatura:.2f}")
 
     def __str__(self):
-        return super().__str__() + f"."
+        self.calcular_custo()
