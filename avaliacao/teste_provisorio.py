@@ -55,5 +55,5 @@ chip2.enviar_sms(3)
 chip2.consumir_dados_internet(4)
 
 chip2.plano.consultar_status()
-## chip2.plano.calcular_custo(3)
+chip2.plano.calcular_custo(3)
 

@@ -34,7 +34,7 @@ class Operadoras:
             print(f"- {cliente.nome}")
 
     def __str__(self):
-        return f'Operadora ativa.'
+        return f'Operadora {self.__nome} ativa.'
 
 
 class Clientes:
@@ -60,15 +60,15 @@ class Clientes:
             )
 
     def listar_chips(self):
-        chips = ""
         for chip in self.__chips_lista:
-            chips += f"- Número: {chip.numero} - Tipo: {chip.plano.tipo}-pago\n"
-        return chips
+            print(f"- Número: {chip.numero} - Tipo: {chip.plano.tipo}-pago")
 
     def __str__(self):
         nome = self.__nome
-        chip = self.listar_chips()
-        return f"Cliente: {nome}\nChips:\n{chip}"
+        chips = ''
+        for chip in self.__chips_lista:
+            chips += f"- Número: {chip.numero} - Tipo: {chip.plano.tipo}-pago\n"
+        return f"Cliente: {nome}\nChips:\n{chips}"
 
 
 class Chips:
@@ -149,7 +149,7 @@ class Planos:
         self.__consumo_total = valor
 
     def calcular_custo(self, meses):
-        return 'Cálculo de custo só está disponível em planos pós-pagos!'
+        print('Cálculo de custo só está disponível em planos pós-pagos!')
     
     def consultar_status(self):
         pass
@@ -188,14 +188,8 @@ class PlanosPre(Planos):
 
     def consultar_status(self):
         self.consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
-        return (
+        print(
             f"## Custo total\n"
-            f"Chamadas: R$ {self.consumo_chamada:.2f}\n"
-            f"SMS: R$ {self.consumo_sms:.2f}\n"
-            f"Internet: R$ {self.consumo_internet:.2f}\n"
-            f"------------------------\n"
-            f"Consumo total: R$ {self.consumo_total:.2f}\n"
-            f"Saldo atual: R$ {self.mostrar_saldo()}"
             f"### Consumo\n"
             f"- Chamadas: R$ {self.consumo_chamada:.2f}\n"
             f"- SMS: R$ {self.consumo_sms:.2f}\n"
@@ -210,7 +204,7 @@ class PlanosPre(Planos):
         print(f"Recarga de R$ {saldo:.2f} realizada com sucesso!")
 
     def mostrar_saldo(self):
-        return f"{self.__saldo:.2f}"
+        print(f"Saldo atual: R$ {self.__saldo:.2f}")
 
     def __verificar_saldo(self, custo):
         if self.__saldo < custo:
