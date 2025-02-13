@@ -154,11 +154,14 @@ Saldo atual: R$ 76.00
 '''
     
     # chip1.plano.consultar_status()
-#     assert str(chip1) == '''## Custo total
-# ### Consumo
-# - Chamadas: R$ 1.00
-# - SMS: R$ 3.00
-# - Internet: R$ 20.00
-# ### Fatura
-# - Consumo total: R$ 24.00
-# - Saldo atual: R$ 76.00'''
+    assert str(chip1.plano) == '''## Custo total
+### Consumo
+- Chamadas: R$ 1.00
+- SMS: R$ 3.00
+- Internet: R$ 20.00
+
+### Fatura
+- Consumo total: R$ 24.00
+- Saldo atual: R$ 76.00
+'''
+    
