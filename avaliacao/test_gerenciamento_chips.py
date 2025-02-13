@@ -91,3 +91,31 @@ def test_Clientes(capfd):
 Chips:
 - Número: 86999999999 - Tipo: pré-pago
 '''
+    
+
+def test_Chips(capfd):
+    chip1 = Chips(86999999999, PlanosPre(86999999999))
+    chip4 = Chips(86977777777, PlanosPos(86977777777))
+    
+    assert chip1.realizar_chamada(2) == '''Não há um cliente cadastrado nesse chip.
+'''
+    
+    assert chip4.enviar_sms(3) == '''Não há um cliente cadastrado nesse chip.
+'''
+    
+    assert chip4.consumir_dados_internet(4) == '''Não há um cliente cadastrado nesse chip.
+'''
+    
+    assert str(chip1) == 'Chip sem cliente (Plano pré-pago, Número: 86999999999) → Saldo: R$ 0'
+    
+    assert str(chip4) == 'Chip sem cliente (Plano pós-pago, Número: 86977777777) → Saldo: R$ 0'
+    
+    joao = Clientes('João')     
+    maria = Clientes('Maria')
+    joao.adicionar_chip(chip1)
+    maria.adicionar_chip(chip4)
+    
+    assert str(chip1) == 'Cliente: João (Plano pré-pago, Número: 86999999999) → Saldo: R$ 0'
+    
+    assert str(chip4) == 'Cliente: Maria (Plano pós-pago, Número: 86977777777) → Saldo: R$ 0'
+    
