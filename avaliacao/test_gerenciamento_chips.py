@@ -18,6 +18,7 @@ def test_Operadoras(capfd):     #teste ok
 
 '''        #teste ok
     
+    
     maria = Clientes('Maria')
     vivo.adicionar_cliente(maria) 
     out, err = capfd.readouterr()
@@ -48,6 +49,7 @@ def test_Clientes(capfd):
     # vivo = Operadoras('Vivo')
     # vivo.adicionar_cliente(joao)
     joao = Clientes('João')     #teste ok
+    maria = Clientes('Maria')
     
     chip1 = Chips(86999999999, PlanosPre(86999999999))      #teste ok
     chip2 = Chips(86999999999, PlanosPre(86999999999))      #teste ok
@@ -59,6 +61,16 @@ def test_Clientes(capfd):
     assert isinstance (chip3, Chips) == True        #teste ok
     assert isinstance (chip4, Chips) == True        #teste ok
 	
-    joao.adicionar_chip(chip1) 
-    out, err = capfd.readouterr()
-    assert out == 'Associando o chip pré-pago (Número: 86999999999) ao cliente João...'
+#     joao.adicionar_chip(chip1)      #teste ok
+#     out, err = capfd.readouterr()
+#     assert out == '''Associando o chip pré-pago (Número: 86999999999) ao cliente João...
+# '''
+
+    assert joao.adicionar_chip(chip1) == '''Associando o chip pré-pago (Número: 86999999999) ao cliente João...'''
+    
+    # maria.adicionar_chip(chip2) 
+    # out, err = capfd.readouterr()
+    # assert out == 'O número 86999999999 não está disponível.'
+    
+    assert maria.adicionar_chip(chip2) == 'O número 86999999999 não está disponível.'
+    
