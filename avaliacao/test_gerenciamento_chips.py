@@ -55,6 +55,7 @@ def test_Clientes(capfd):
     chip2 = Chips(86999999999, PlanosPre(86999999999))      #teste ok
     chip3 = Chips(86988888888, PlanosPre(86988888888))      #teste ok
     chip4 = Chips(86977777777, PlanosPos(86977777777))      #teste ok
+    chip5 = '86966666666'
 	
     assert isinstance (chip1, Chips) == True        #teste ok
     assert isinstance (chip2, Chips) == True        #teste ok
@@ -66,11 +67,27 @@ def test_Clientes(capfd):
 #     assert out == '''Associando o chip pré-pago (Número: 86999999999) ao cliente João...
 # '''
 
-    assert joao.adicionar_chip(chip1) == '''Associando o chip pré-pago (Número: 86999999999) ao cliente João...'''
+    assert joao.adicionar_chip(chip1) == 'Associando o chip pré-pago (Número: 86999999999) ao cliente João...'
     
     # maria.adicionar_chip(chip2) 
     # out, err = capfd.readouterr()
     # assert out == 'O número 86999999999 não está disponível.'
     
-    assert maria.adicionar_chip(chip2) == 'O número 86999999999 não está disponível.'
+    assert maria.adicionar_chip(chip1) == 'O número 86999999999 não está disponível.'
     
+    assert maria.adicionar_chip(chip3) == 'Associando o chip pré-pago (Número: 86988888888) ao cliente Maria...'
+    
+    assert maria.adicionar_chip(chip4) == 'Associando o chip pós-pago (Número: 86977777777) ao cliente Maria...'
+        
+    with pytest.raises(TypeError,match='Insira um chip válido'):
+        maria.adicionar_chip(chip5)
+    
+    maria.listar_chips() 
+    out, err = capfd.readouterr()
+    assert out == '''- Número: 86988888888 - Tipo: pré-pago
+- Número: 86977777777 - Tipo: pós-pago
+'''
+    assert str(joao) == '''Cliente: João
+Chips:
+- Número: 86999999999 - Tipo: pré-pago
+'''
