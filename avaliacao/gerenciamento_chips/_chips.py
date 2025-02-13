@@ -1,9 +1,8 @@
 class Chips:
-    def __init__(self, numero, cliente, plano):
+    def __init__(self, numero, plano):
         self.__numero = numero
         self.__plano = plano
-        self.__cliente = cliente
-        self.__cliente.adicionar_chip(self)
+        self.__cliente = None
 
     @property
     def plano(self):
@@ -17,15 +16,31 @@ class Chips:
     def cliente(self):
         return self.__cliente
 
+    @cliente.setter
+    def cliente(self, cliente):
+        self.__cliente = cliente
+
     ## Métodos polimórficos
     def realizar_chamada(self, duracao):
-        self.__plano.realizar_chamada(self, duracao)
+        if self.__cliente != None:
+            self.__plano.realizar_chamada(self, duracao)
+        else:
+            print('Não há um cliente cadastrado nesse chip.\n')
 
     def enviar_sms(self, quantidade):
-        self.__plano.enviar_sms(self, quantidade)
+        if self.__cliente != None:
+            self.__plano.enviar_sms(self, quantidade)
+        else:
+            print('Não há um cliente cadastrado nesse chip.\n')
 
     def consumir_dados_internet(self, gb):
-        self.__plano.consumir_dados_internet(self, gb)
+        if self.__cliente != None:
+            self.__plano.consumir_dados_internet(self, gb)
+        else:
+            print('Não há um cliente cadastrado nesse chip.\n')
 
     def __str__(self):
-        return f'{self.__cliente.nome} ({self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}'
+        if self.__cliente != None:
+            return f'{self.__cliente.nome} ({self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}'
+        else:
+            return f'Chip sem cliente ({self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}'

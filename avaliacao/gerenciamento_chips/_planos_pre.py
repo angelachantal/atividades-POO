@@ -1,10 +1,13 @@
 from ._planos import Planos
 
 class PlanosPre(Planos):
-    def __init__(self):
+    def __init__(self, numero):
         super().__init__()
         self.__tipo = 'pré'
         self.__saldo = 0
+        self.__numero = numero
+
+        print(f'## Chip criado!\nNúmero: {self.__numero}\nTipo: {self.__tipo}')
 
     @property
     def tipo(self):

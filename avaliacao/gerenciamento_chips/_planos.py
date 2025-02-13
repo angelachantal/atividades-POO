@@ -43,7 +43,7 @@ class Planos:
         self.__consumo_total = valor
 
     def calcular_custo(self, meses):
-        print('Cálculo de custo só está disponível em planos pós-pagos!')
+        pass
     
     def consultar_status(self):
         pass
@@ -56,15 +56,6 @@ class Planos:
 
     def consumir_dados_internet(self):
         pass
-
-    def adicionar_saldo(self):
-        print('Saldo só está disponível em planos pré-pagos!')
-
-    def mostrar_saldo(self):
-        print('Saldo só está disponível em planos pré-pagos!')
-
-    def set_vencimento(self):
-        print('Só é possível mudar o vencimento em planos pós-pagos!')
 
     def __str__(self):
         pass

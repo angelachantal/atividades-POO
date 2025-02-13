@@ -1,14 +1,3 @@
-# Avaliação POO
-# Equipe 2: Ângela Chantal; Murilo Monte; Renan Miqueias; Thiário Lima
-## from random import randint
-# fazer verificações
-
-# PENDÊNCIAS:
-# - Criar as exceções que faltam
-# - Código do pytest
-# - comentar código 
-# - datas - ok
-
 from ._operadoras import Operadoras
 from ._clientes import Clientes
 from ._chips import Chips

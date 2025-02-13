@@ -3,15 +3,16 @@ from dateutil.relativedelta import relativedelta
 from ._planos import Planos
 
 class PlanosPos(Planos):
-    def __init__(self):
+    def __init__(self, numero):
         super().__init__()
         self.__tipo = 'pós'
+        self.__numero = numero
         self.__fatura_inicial = 120
         self.__fatura = self.__fatura_inicial
         self.__data_criacao = datetime.today()
         self.__vencimento = self.__data_criacao + relativedelta(months=1)
 
-        print(f'Fatura mensal de R$ {self.__fatura} gerada.')
+        print(f'## Chip criado!\nNúmero: {self.__numero}\nTipo: {self.__tipo}\nFatura mensal de R$ {self.__fatura} gerada.\n')
 
     @property
     def tipo(self):
