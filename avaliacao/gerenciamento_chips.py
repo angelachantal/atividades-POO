@@ -148,8 +148,8 @@ class Planos:
     def consumo_total(self, valor):
         self.__consumo_total = valor
 
-    def calcular_custo(self):
-        pass
+    def calcular_custo(self, meses):
+        return 'Cálculo de custo só está disponível em planos pós-pagos!'
     
     def consultar_status(self):
         pass
@@ -171,6 +171,7 @@ class Planos:
 
     def set_vencimento(self):
         print('Só é possível mudar o vencimento em planos pós-pagos!')
+
     def __str__(self):
         pass
 
@@ -185,7 +186,7 @@ class PlanosPre(Planos):
     def tipo(self):
         return self.__tipo
 
-    def calcular_custo(self):
+    def consultar_status(self):
         self.consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
         return (
             f"## Custo total\n"
@@ -195,10 +196,14 @@ class PlanosPre(Planos):
             f"------------------------\n"
             f"Consumo total: R$ {self.consumo_total:.2f}\n"
             f"Saldo atual: R$ {self.mostrar_saldo()}"
+            f"### Consumo\n"
+            f"- Chamadas: R$ {self.consumo_chamada:.2f}\n"
+            f"- SMS: R$ {self.consumo_sms:.2f}\n"
+            f"- Internet: R$ {self.consumo_internet:.2f}\n\n"
+            f"### Fatura\n"
+            f"- Consumo total: R$ {self.consumo_total:.2f}\n"
+            f"- Saldo atual: R$ {self.__saldo:.2f}\n"
         )
-
-    def consultar_status(self):
-        return f'Saldo: {self.mostrar_saldo()}'
         
     def adicionar_saldo(self, saldo):
         self.__saldo += saldo
@@ -209,7 +214,7 @@ class PlanosPre(Planos):
 
     def __verificar_saldo(self, custo):
         if self.__saldo < custo:
-            raise ValueError(f'Saldo insuficiente!\nCusto: R$ {custo}\nSaldo atual: R$ {self.mostrar_saldo()}')
+            raise ValueError(f'Saldo insuficiente!\nCusto: R$ {custo}\nSaldo atual: R$ {self.__saldo:.2f}')
 
     def realizar_chamada(self, chip, duracao):
         # Pré-pago: Deduz o custo da chamada do saldo (R$ 0,50/min).
@@ -220,7 +225,7 @@ class PlanosPre(Planos):
         print(
             f"Cliente {chip.cliente.nome} fez uma ligação de {duracao} minutos (custo: R$ {custo:.2f})..."
         )
-        print(f"Saldo atual: {self.mostrar_saldo()}")
+        print(f"Saldo atual: R$ {self.__saldo:.2f}")
 
     def enviar_sms(self, chip, quantidade):
         # Deduz o custo dos SMS do saldo (R$ 0,30/SMS).
@@ -231,7 +236,7 @@ class PlanosPre(Planos):
         print(
             f"Cliente {chip.cliente.nome} enviou {quantidade} SMS (custo: R$ {custo:.2f})..."
         )
-        print(f"Saldo atual: {self.mostrar_saldo()}")
+        print(f"Saldo atual: R$ {self.__saldo:.2f}")
 
     def consumir_dados_internet(self, chip, gb):
         # Deduz o custo do saldo (R$ 5,00/GB).
@@ -242,27 +247,32 @@ class PlanosPre(Planos):
         print(
             f"Cliente {chip.cliente.nome} consumiu  {gb}GB de internet (custo: R$ {custo:.2f})..."
         )
-        print(f"Saldo atual: {self.mostrar_saldo()}")
+        print(f"Saldo atual: R$ {self.__saldo:.2f}")
 
     def __str__(self):
-        self.calcular_custo()
+        self.consultar_status()
 
 
 class PlanosPos(Planos):
     def __init__(self):
         super().__init__()
         self.__tipo = 'pós'
-        self.__fatura = 120
+        self.__fatura_inicial = 120
+        self.__fatura = self.__fatura_inicial
         self.__data_criacao = datetime.today()
         self.__vencimento = self.__data_criacao + relativedelta(months=1)
-        
+
         print(f'Fatura mensal de R$ {self.__fatura} gerada.')
+
+    @property
+    def tipo(self):
+        return self.__tipo
     
     def set_vencimento(self, vencimento):
         try:
             vencimento_valido = datetime.strptime(vencimento, "%d/%m/%Y")
             self.__vencimento = vencimento_valido
-            print(f'Vencimento da fatura alterada para: {self.__vencimento}')
+            print(f'Vencimento da fatura alterada para: {self.__vencimento}\n')
         except ValueError:
             raise ValueError("Data e hora inválidas!")
 
@@ -272,22 +282,31 @@ class PlanosPos(Planos):
         else:
             raise ValueError(f"Fatura vencida!\nData do vencimento: {self.__vencimento}")
         
-    def calcular_custo(self):
-        self.consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
-        return (
-            f"## Custo total\n"
-            f"Chamadas: R$ {self.consumo_chamada:.2f}\n"
-            f"SMS: R$ {self.consumo_sms:.2f}\n"
-            f"Internet: R$ {self.consumo_internet:.2f}\n"
-            f"------------------------\n"
-            f"Consumo total: R$ {self.consumo_total:.2f}\n"
-            f'Fatura: R$ {self.__fatura:.2f}\n'
-            f'Data criação: {self.__data_criacao}\n'
-            f'Vencimento: {self.__vencimento}\n'
+    def calcular_custo(self, meses=1):
+        calculo = meses * self.__fatura_inicial
+        print(
+            f'## Cálculo de custo em meses\n'
+            f'- Fatura: R$ {self.__fatura_inicial:.2f}\n'
+            f'- Valor da fatura durante {meses} meses: R$ {calculo}\n'
         )
 
     def consultar_status(self):
-        return f'Fatura: R$ {self.__fatura:.2f}\nVencimento: {self.__vencimento}'
+        self.__consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
+        valor_final = self.__consumo_total + self.__fatura
+
+        print (
+            f"## Custo total\n"
+            f"### Consumo\n"
+            f"- Chamadas: R$ {self.consumo_chamada:.2f}\n"
+            f"- SMS: R$ {self.consumo_sms:.2f}\n"
+            f"- Internet: R$ {self.consumo_internet:.2f}\n\n"
+            f"### Fatura\n"
+            f'- Fatura: R$ {self.__fatura:.2f}\n'
+            f'- Consumo além da fatura: R$ {self.__consumo_total:.2f}\n'
+            f"------------------------\n"
+            f'- Total a pagar: R$ {valor_final:.2f}\n'
+            f'- Vencimento: {self.__vencimento}\n'
+        )
         
     def realizar_chamada(self, chip, duracao):
         self.__verificar_vencimento()
@@ -298,7 +317,7 @@ class PlanosPos(Planos):
         print(
             f"Cliente {chip.cliente.nome} fez uma ligação de {duracao} minutos (custo: R$ {custo:.2f})..."
         )
-        print(f"Fatura atual: R$ {self.__fatura:.2f}")
+        print(f"Fatura atual: R$ {self.__fatura:.2f}\n")
 
     def enviar_sms(self, chip, quantidade):
         self.__verificar_vencimento()
@@ -309,7 +328,7 @@ class PlanosPos(Planos):
         print(
             f"Cliente {chip.cliente.nome} enviou {quantidade} SMS (custo: R$ {custo:.2f})..."
         )
-        print(f"Fatura atual: R$ {self.__fatura:.2f}")
+        print(f"Fatura atual: R$ {self.__fatura:.2f}\n")
 
     def consumir_dados_internet(self, chip, gb):
         self.__verificar_vencimento()
@@ -320,7 +339,7 @@ class PlanosPos(Planos):
         print(
             f"Cliente {chip.cliente.nome} consumiu  {gb}GB de internet (custo: R$ {custo:.2f})..."
         )
-        print(f"Fatura atual: R$ {self.__fatura:.2f}")
+        print(f"Fatura atual: R$ {self.__fatura:.2f}\n")
 
     def __str__(self):
-        self.calcular_custo()
+        self.consultar_status()

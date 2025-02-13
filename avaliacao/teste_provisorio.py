@@ -10,8 +10,13 @@ alice = Clientes(
     nome="Alice",
 )
 
+hiromi = Clientes(
+    nome="Hiromi",
+)
+
 ## Adicionando clientes a operadora
 vivo.adicionar_cliente(alice)
+vivo.adicionar_cliente(hiromi)
 vivo.listar_clientes()
 
 ## Adicionando chips a cliente
@@ -28,7 +33,9 @@ chip2 = Chips(
 )
 
 ## Listando chips de cliente
-print(alice.listar_chips())
+alice.listar_chips()
+
+print(alice)
 
 # print(chip2.plano.calcular_custo())
 
@@ -41,10 +48,12 @@ print(alice.listar_chips())
 # print(chip1.plano.calcular_custo())
 # # print(chip1.plano.consultar_status())
 
-# chip2.plano.set_vencimento('12/01/2025')
+## Testes plano pós-pago
+chip2.plano.set_vencimento('12/03/2025')
 chip2.realizar_chamada(2)
 chip2.enviar_sms(3)
 chip2.consumir_dados_internet(4)
-print(chip2.plano.calcular_custo())
-chip1.plano.set_vencimento()
-# # print(alice)
+
+chip2.plano.consultar_status()
+## chip2.plano.calcular_custo(3)
+
