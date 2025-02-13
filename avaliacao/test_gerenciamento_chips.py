@@ -1,4 +1,5 @@
 import pytest
+import re
 from gerenciamento_chips import *
 
 #Executar pytest test_gerenciamento_chips.py
@@ -119,3 +120,45 @@ def test_Chips(capfd):
     
     assert str(chip4) == 'Cliente: Maria (Plano pós-pago, Número: 86977777777) → Saldo: R$ 0'
     
+
+def test_planos_pre(capfd):
+    chip1 = Chips(86999999999, PlanosPre(86999999999))
+    joao = Clientes('João')     
+    joao.adicionar_chip(chip1)
+    
+    #re.escape evita erros com caracteres especiais como $
+    with pytest.raises(ValueError,match=re.escape('''Saldo insuficiente!
+Custo: R$ 0.5
+Saldo atual: R$ 0.00''')):
+        chip1.realizar_chamada(1) # Testa o método __verificar_saldo
+    
+    assert chip1.plano.adicionar_saldo(100) == 'Recarga de R$ 100.00 realizada com sucesso!'
+    
+    assert chip1.plano.mostrar_saldo() == 'Saldo atual: R$ 100.00'
+    
+    chip1.realizar_chamada(2)
+    out, err = capfd.readouterr()
+    assert out == '''Cliente João fez uma ligação de 2 minuto(s) (custo: R$ 1.00)...
+Saldo atual: R$ 99.00
+'''
+    
+    chip1.enviar_sms(10)
+    out, err = capfd.readouterr()
+    assert out == '''Cliente João enviou 10 SMS (custo: R$ 3.00)...
+Saldo atual: R$ 96.00
+'''
+    chip1.consumir_dados_internet(4)
+    out, err = capfd.readouterr()
+    assert out == '''Cliente João consumiu 4GB de internet (custo: R$ 20.00)...
+Saldo atual: R$ 76.00
+'''
+    
+    # chip1.plano.consultar_status()
+#     assert str(chip1) == '''## Custo total
+# ### Consumo
+# - Chamadas: R$ 1.00
+# - SMS: R$ 3.00
+# - Internet: R$ 20.00
+# ### Fatura
+# - Consumo total: R$ 24.00
+# - Saldo atual: R$ 76.00'''
