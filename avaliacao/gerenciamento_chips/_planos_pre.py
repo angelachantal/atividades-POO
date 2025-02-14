@@ -1,21 +1,24 @@
 from ._planos import Planos
 
+
 class PlanosPre(Planos):
     def __init__(self, numero):
         super().__init__()
-        self.__tipo = 'pré'
+        self.__tipo = "pré"
         self.__saldo = 0
         self.__numero = numero
 
-        print(f'## Chip criado!\nNúmero: {self.__numero}\nTipo: {self.__tipo}')
+        # print(f'## Chip criado!\nNúmero: {self.__numero}\nTipo: {self.__tipo}')
 
     @property
     def tipo(self):
         return self.__tipo
 
     def consultar_status(self):
-        self.consumo_total = (self.consumo_sms + self.consumo_chamada + self.consumo_internet)
-        print(
+        self.consumo_total = (
+            self.consumo_sms + self.consumo_chamada + self.consumo_internet
+        )
+        return (
             f"## Custo total\n"
             f"### Consumo\n"
             f"- Chamadas: R$ {self.consumo_chamada:.2f}\n"
@@ -25,17 +28,19 @@ class PlanosPre(Planos):
             f"- Consumo total: R$ {self.consumo_total:.2f}\n"
             f"- Saldo atual: R$ {self.__saldo:.2f}\n"
         )
-        
+
     def adicionar_saldo(self, saldo):
         self.__saldo += saldo
-        print(f"Recarga de R$ {saldo:.2f} realizada com sucesso!")
+        return f"Recarga de R$ {saldo:.2f} realizada com sucesso!"
 
     def mostrar_saldo(self):
-        print(f"Saldo atual: R$ {self.__saldo:.2f}")
+        return f"Saldo atual: R$ {self.__saldo:.2f}"
 
     def __verificar_saldo(self, custo):
         if self.__saldo < custo:
-            raise ValueError(f'Saldo insuficiente!\nCusto: R$ {custo}\nSaldo atual: R$ {self.__saldo:.2f}')
+            raise ValueError(
+                f"Saldo insuficiente!\nCusto: R$ {custo}\nSaldo atual: R$ {self.__saldo:.2f}"
+            )
 
     def realizar_chamada(self, chip, duracao):
         # Pré-pago: Deduz o custo da chamada do saldo (R$ 0,50/min).
@@ -44,7 +49,7 @@ class PlanosPre(Planos):
         self.__saldo -= custo
         self.consumo_chamada += custo
         print(
-            f"Cliente {chip.cliente.nome} fez uma ligação de {duracao} minutos (custo: R$ {custo:.2f})..."
+            f"Cliente {chip.cliente.nome} fez uma ligação de {duracao} minuto(s) (custo: R$ {custo:.2f})..."
         )
         print(f"Saldo atual: R$ {self.__saldo:.2f}")
 
@@ -66,9 +71,9 @@ class PlanosPre(Planos):
         self.__saldo -= custo
         self.consumo_internet += custo
         print(
-            f"Cliente {chip.cliente.nome} consumiu  {gb}GB de internet (custo: R$ {custo:.2f})..."
+            f"Cliente {chip.cliente.nome} consumiu {gb}GB de internet (custo: R$ {custo:.2f})..."
         )
         print(f"Saldo atual: R$ {self.__saldo:.2f}")
 
     def __str__(self):
-        self.consultar_status()
+        return self.consultar_status()

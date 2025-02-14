@@ -1,5 +1,6 @@
 from ._chips import Chips
 
+
 class Clientes:
     def __init__(self, nome):
         self.__nome = nome
@@ -16,27 +17,24 @@ class Clientes:
     def adicionar_chip(self, chip):
         if isinstance(chip, Chips):
             if chip.cliente == None:
-                print(
-                    f"Associando o chip {chip.plano.tipo}-pago (Número: {chip.numero}) ao cliente {self.__nome}..."
-                )
                 self.__chips_lista.append(chip)
                 chip.cliente = self
-                print(f'{chip.cliente.nome} associado(a) ao chip!')
+                return f"Associando o chip {chip.plano.tipo}-pago (Número: {chip.numero}) ao cliente {self.__nome}..."
             else:
-                print(f"O número {chip.numero} não está disponível.")
+                return f"O número {chip.numero} não está disponível."
         else:
-            raise TypeError('Insira um chip válido.')
-            
+            raise TypeError("Insira um chip válido.")
+
     def listar_chips(self):
         if len(self.__chips_lista) == 0:
-            print(f'O usuário {self.__nome} não possui chips.\n')
+            print(f"O usuário {self.__nome} não possui chips.\n")
         else:
             for chip in self.__chips_lista:
                 print(f"- Número: {chip.numero} - Tipo: {chip.plano.tipo}-pago")
 
     def __str__(self):
         nome = self.__nome
-        chips = ''
+        chips = ""
         for chip in self.__chips_lista:
             chips += f"- Número: {chip.numero} - Tipo: {chip.plano.tipo}-pago\n"
         return f"Cliente: {nome}\nChips:\n{chips}"

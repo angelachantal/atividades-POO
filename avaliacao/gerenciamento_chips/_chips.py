@@ -25,22 +25,22 @@ class Chips:
         if self.__cliente != None:
             self.__plano.realizar_chamada(self, duracao)
         else:
-            print('Não há um cliente cadastrado nesse chip.\n')
+            return "Não há um cliente cadastrado nesse chip.\n"
 
     def enviar_sms(self, quantidade):
         if self.__cliente != None:
             self.__plano.enviar_sms(self, quantidade)
         else:
-            print('Não há um cliente cadastrado nesse chip.\n')
+            return "Não há um cliente cadastrado nesse chip.\n"
 
     def consumir_dados_internet(self, gb):
         if self.__cliente != None:
             self.__plano.consumir_dados_internet(self, gb)
         else:
-            print('Não há um cliente cadastrado nesse chip.\n')
+            return "Não há um cliente cadastrado nesse chip.\n"
 
     def __str__(self):
         if self.__cliente != None:
-            return f'{self.__cliente.nome} ({self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}'
+            return f"Cliente: {self.__cliente.nome} (Plano {self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}"
         else:
-            return f'Chip sem cliente ({self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}'
+            return f"Chip sem cliente (Plano {self.__plano.tipo}-pago, Número: {self.__numero}) → Saldo: R$ {self.__plano.consumo_total}"
