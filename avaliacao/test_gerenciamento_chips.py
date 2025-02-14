@@ -165,3 +165,59 @@ Saldo atual: R$ 76.00
 - Saldo atual: R$ 76.00
 '''
     
+def test_planos_pos(capfd):
+    chip4 = Chips(86977777777, PlanosPos(86977777777))
+    maria = Clientes('Maria')     
+    maria.adicionar_chip(chip4)
+    
+    with pytest.raises(ValueError,match=('Data e hora inválidas!')):
+        chip4.plano.set_vencimento('01/044/2025')       #teste ok
+        
+    assert chip4.plano.set_vencimento('01/02/2025') == '''Vencimento da fatura alterada para: 01/02/2025
+'''     #teste ok
+    
+    with pytest.raises(ValueError,match=('''Fatura vencida!
+Data do vencimento: 01/02/2025''')):
+        chip4.realizar_chamada(10)      #testa método __verificar_vencimento
+
+    assert chip4.plano.calcular_custo(3) == '''## Cálculo de custo em meses
+- Fatura: R$ 120.00
+- Valor da fatura durante 3 meses: R$ 360.00
+'''
+    
+    assert chip4.plano.set_vencimento('01/04/2025') == '''Vencimento da fatura alterada para: 01/04/2025
+'''     #teste ok
+
+    chip4.realizar_chamada(10)
+    out, err = capfd.readouterr()
+    assert out == '''Cliente Maria fez uma ligação de 10 minutos (custo: R$ 3.00)...
+Fatura atual: R$ 123.00
+
+'''
+    
+    chip4.enviar_sms(5)
+    out, err = capfd.readouterr()
+    assert out == '''Cliente Maria enviou 5 SMS (custo: R$ 1.00)...
+Fatura atual: R$ 124.00
+
+'''
+
+    chip4.consumir_dados_internet(5)
+    out, err = capfd.readouterr()
+    assert out == '''Cliente Maria consumiu 5GB de internet (custo: R$ 10.00)...
+Fatura atual: R$ 134.00
+
+'''
+    
+    # chip1.plano.consultar_status()
+    assert str(chip4.plano) =='''## Custo total
+### Consumo
+- Chamadas: R$ 3.00
+- SMS: R$ 1.00
+- Internet: R$ 10.00
+
+### Fatura
+- Consumo além da fatura: R$ 14.00
+- Total a pagar: R$ 134.00
+- Vencimento: 01/04/2025
+'''
